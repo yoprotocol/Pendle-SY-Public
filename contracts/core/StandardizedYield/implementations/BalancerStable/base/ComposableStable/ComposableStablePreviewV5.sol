@@ -145,10 +145,15 @@ contract ComposableStablePreviewV5 is ComposableStablePreview {
             uint256 preJoinExitInvariant
         ) = _beforeJoinExit(registeredBalances, imd, caches);
 
-        function(uint256[] memory, uint256, uint256, uint256, uint256[] memory, bytes memory, ImmutableData memory)
-            internal
-            view
-            returns (uint256, uint256[] memory) _doJoinOrExit = (isJoin ? _doJoin : _doExit);
+        function(
+            uint256[] memory,
+            uint256,
+            uint256,
+            uint256,
+            uint256[] memory,
+            bytes memory,
+            ImmutableData memory
+        ) internal view returns (uint256, uint256[] memory) _doJoinOrExit = (isJoin ? _doJoin : _doExit);
 
         (bptAmount, amountsDelta) = _doJoinOrExit(
             balances,

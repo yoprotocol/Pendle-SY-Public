@@ -10,7 +10,11 @@ contract PendleERC4626SYUpg is SYBaseUpg {
 
     constructor(address _erc4626) SYBaseUpg(_erc4626) {
         asset = IERC4626(_erc4626).asset();
-        _safeApproveInf(asset, _erc4626);
+    }
+
+    function initialize(string memory _name, string memory _symbol) external initializer {
+        __SYBaseUpg_init(_name, _symbol);
+        _safeApproveInf(asset, yieldToken);
     }
 
     function _deposit(

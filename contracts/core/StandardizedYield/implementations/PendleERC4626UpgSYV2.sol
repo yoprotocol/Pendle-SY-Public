@@ -10,7 +10,11 @@ contract PendleERC4626SYUpg is SYBaseUpg {
 
     constructor(address _erc4626) SYBaseUpg(_erc4626) {
         asset = IERC4626(_erc4626).asset();
-        _safeApproveInf(asset, _erc4626);
+    }
+
+    function initialize(string memory _name, string memory _symbol) external initializer {
+        __SYBaseUpg_init(_name, _symbol);
+        _safeApproveInf(asset, yieldToken);
     }
 
     function _deposit(
@@ -57,7 +61,7 @@ contract PendleERC4626SYUpg is SYBaseUpg {
         else return IERC4626(yieldToken).previewRedeem(amountSharesToRedeem);
     }
 
-    function getTokensIn() public view override returns (address[] memory res) {
+    function getTokensIn() public view virtual override returns (address[] memory res) {
         res = new address[](2);
         res[0] = asset;
         res[1] = yieldToken;
@@ -69,7 +73,7 @@ contract PendleERC4626SYUpg is SYBaseUpg {
         res[1] = yieldToken;
     }
 
-    function isValidTokenIn(address token) public view override returns (bool) {
+    function isValidTokenIn(address token) public view virtual override returns (bool) {
         return token == yieldToken || token == asset;
     }
 
