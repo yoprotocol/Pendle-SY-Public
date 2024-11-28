@@ -7,6 +7,8 @@ import "../../../../interfaces/IPExchangeRateOracle.sol";
 import "../../../../interfaces/Lombard/ILBTCMinterBase.sol";
 
 contract PendleLBTCBaseSY is SYBaseUpg, IPTokenWithSupplyCap {
+    error LombardStakeLimitExceed(uint256 remainingStake, uint256 amountStaking);
+
     event SetNewExchangeRateOracle(address oracle);
 
     address public exchangeRateOracle;
@@ -72,6 +74,13 @@ contract PendleLBTCBaseSY is SYBaseUpg, IPTokenWithSupplyCap {
         uint256 amountTokenToDeposit
     ) internal view override returns (uint256 /*amountSharesOut*/) {
         if (tokenIn == LBTC) return amountTokenToDeposit;
+
+        {
+            uint256 remainingStake = ILBTCMinterBase(MINTER).remainingStake();
+            if (amountTokenToDeposit > remainingStake) {
+                revert LombardStakeLimitExceed(remainingStake, amountTokenToDeposit);
+            }
+        }
 
         uint256 feeRate = ILBTCMinterBase(MINTER).relativeFee();
         uint256 feeAmount = PMath.rawDivUp(amountTokenToDeposit * feeRate, MINTER_MAX_COMISSION);
