@@ -4,6 +4,8 @@ pragma solidity ^0.8.17;
 import "../PendleERC4626UpgSYV2.sol";
 import "../../../../interfaces/Origin/IOETHVault.sol";
 
+// NOTE: Preview deposit might not be correct as depositing > threshold shoul trigger a rebase from origin side
+
 contract PendleSuperOETHSY is PendleERC4626SYUpg {
     address public constant WSOETH = 0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6;
     address public constant WETH = 0x4200000000000000000000000000000000000006;
