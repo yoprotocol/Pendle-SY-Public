@@ -6,7 +6,7 @@ import "../../SYBaseWithRewardsUpg.sol";
 import "../../../../interfaces/IPTokenWithSupplyCap.sol";
 import "../../../../interfaces/Moonwell/IMToken.sol";
 
-contract PendleMoonwellTokenSY is SYBaseWithRewardsUpg, IPTokenWithSupplyCap {
+contract PendleMoonwellTokenBaseSY is SYBaseWithRewardsUpg, IPTokenWithSupplyCap {
     using PMath for uint256;
 
     error MoonwellMintError(uint256 errorCode);
@@ -23,6 +23,7 @@ contract PendleMoonwellTokenSY is SYBaseWithRewardsUpg, IPTokenWithSupplyCap {
     address public immutable rewardDistributor;
 
     constructor(address _mToken) SYBaseUpg(_mToken) {
+        assert(block.chainid == 8453);
         comptroller = IMToken(_mToken).comptroller();
         underlying = IMToken(_mToken).underlying();
         rewardDistributor = IMComptroller(comptroller).rewardDistributor();
@@ -137,7 +138,11 @@ contract PendleMoonwellTokenSY is SYBaseWithRewardsUpg, IPTokenWithSupplyCap {
 
     // In underlying asset unit
     function getAbsoluteSupplyCap() external view virtual returns (uint256) {
-        return IMComptroller(comptroller).supplyCaps(yieldToken);
+        uint256 cap = IMComptroller(comptroller).supplyCaps(yieldToken);
+        if (cap == 0) {
+            return type(uint256).max;
+        }
+        return cap;
     }
 
     function getAbsoluteTotalSupply() external view virtual returns (uint256) {
