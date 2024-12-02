@@ -22,7 +22,7 @@ contract PendleInstadappLendingSY is SYBaseWithRewardsUpg {
 
     function initialize(string memory _name, string memory _symbol) external initializer {
         __SYBaseUpg_init(_name, _symbol);
-        _safeApproveInf(asset, LIQUIDITY);
+        _safeApproveInf(asset, yieldToken);
         _safeApproveInf(yieldToken, stakingRewards);
     }
 
