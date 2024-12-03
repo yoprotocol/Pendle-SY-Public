@@ -19,6 +19,7 @@ contract PendleInstadappLendingSY is SYBaseWithRewardsUpg {
     address public stakingRewards;
 
     constructor(address _fToken) SYBaseUpg(_fToken) {
+        assert(block.chainid == 1);
         asset = IERC4626(_fToken).asset();
     }
 
