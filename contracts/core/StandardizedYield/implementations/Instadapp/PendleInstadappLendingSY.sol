@@ -8,22 +8,23 @@ import "../../../../interfaces/Instadapp/IInstadappStakingRewards.sol";
 contract PendleInstadappLendingSY is SYBaseWithRewardsUpg {
     using PMath for uint256;
 
+    event NewStakingRewards(address newStakingRewards);
+
     address public constant LIQUIDITY = 0x52Aa899454998Be5b000Ad077a46Bbe360F4e497;
     address public constant INST = 0x6f40d4A6237C257fff2dB00FA0510DeEECd303eb;
 
     // solhint-disable immutable-vars-naming
-    address public immutable stakingRewards;
     address public immutable asset;
 
-    constructor(address _stakingRewards) SYBaseUpg(IInstadappStakingRewards(_stakingRewards).stakingToken()) {
-        stakingRewards = _stakingRewards;
-        asset = IERC4626(yieldToken).asset();
+    address public stakingRewards;
+
+    constructor(address _fToken) SYBaseUpg(_fToken) {
+        asset = IERC4626(_fToken).asset();
     }
 
     function initialize(string memory _name, string memory _symbol) external initializer {
         __SYBaseUpg_init(_name, _symbol);
         _safeApproveInf(asset, yieldToken);
-        _safeApproveInf(yieldToken, stakingRewards);
     }
 
     function _deposit(
@@ -36,7 +37,9 @@ contract PendleInstadappLendingSY is SYBaseWithRewardsUpg {
         } else {
             amountToStake = IERC4626(yieldToken).deposit(amountDeposited, address(this));
         }
-        IInstadappStakingRewards(stakingRewards).stake(amountToStake);
+        if (stakingRewards != address(0)) {
+            IInstadappStakingRewards(stakingRewards).stake(amountToStake);
+        }
         return amountToStake;
     }
 
@@ -45,7 +48,9 @@ contract PendleInstadappLendingSY is SYBaseWithRewardsUpg {
         address tokenOut,
         uint256 amountSharesToRedeem
     ) internal override returns (uint256 amountTokenOut) {
-        IInstadappStakingRewards(stakingRewards).withdraw(amountSharesToRedeem);
+        if (stakingRewards != address(0)) {
+            IInstadappStakingRewards(stakingRewards).withdraw(amountSharesToRedeem);
+        }
         if (tokenOut == yieldToken) {
             amountTokenOut = amountSharesToRedeem;
             _transferOut(yieldToken, receiver, amountTokenOut);
@@ -107,6 +112,24 @@ contract PendleInstadappLendingSY is SYBaseWithRewardsUpg {
     }
 
     function _redeemExternalReward() internal override {
-        IInstadappStakingRewards(stakingRewards).getReward();
+        if (stakingRewards != address(0)) {
+            IInstadappStakingRewards(stakingRewards).getReward();
+        }
+    }
+
+    function setStakingRewards(address _newStakingRewards) external onlyOwner {
+        address _oldStakingRewards = stakingRewards;
+        if (_oldStakingRewards != address(0)) {
+            IInstadappStakingRewards(_oldStakingRewards).exit();
+            _safeApprove(yieldToken, _oldStakingRewards, 0);
+        }
+
+        if (_newStakingRewards != address(0)) {
+            _safeApproveInf(yieldToken, _newStakingRewards);
+            IInstadappStakingRewards(_newStakingRewards).stake(_selfBalance(yieldToken));
+        }
+
+        stakingRewards = _newStakingRewards;
+        emit NewStakingRewards(_newStakingRewards);
     }
 }

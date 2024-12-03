@@ -9,4 +9,6 @@ interface IInstadappStakingRewards {
     function withdraw(uint256 amount) external;
 
     function getReward() external;
+
+    function exit() external;
 }
