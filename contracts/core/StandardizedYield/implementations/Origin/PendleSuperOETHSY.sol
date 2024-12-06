@@ -14,7 +14,7 @@ contract PendleSuperOETHSY is PendleERC4626SYUpg {
     }
 
     function initialize() external initializer {
-        __SYBaseUpg_init("SY Wrapped Super OETHb", "SY-wsupperOETHb");
+        __SYBaseUpg_init("SY Wrapped Super OETHb", "SY-wsuperOETHb");
         _safeApproveInf(asset, yieldToken);
         _safeApproveInf(WETH, OETH_VAULT);
     }
