@@ -46,11 +46,7 @@ contract PendleSavingUSDASY is SYBaseUpg {
     //////////////////////////////////////////////////////////////*/
 
     function exchangeRate() public view virtual override returns (uint256) {
-        return _getExchangeRate();
-    }
-
-    function _getExchangeRate() internal view returns (uint256) {
-        uint256 totalUnderlying = IAvalonSaving(SAVING).totalUnderlying();
+        uint256 totalUnderlying = IAvalonSaving(SAVING).getTotalUnderlying();
         uint256 totalSUSDA = IAvalonSaving(SAVING).totalsUSDaLockedAmount();
         return PMath.divDown(totalUnderlying, totalSUSDA);
     }
@@ -64,7 +60,7 @@ contract PendleSavingUSDASY is SYBaseUpg {
         uint256 amountTokenToDeposit
     ) internal view override returns (uint256 /*amountSharesOut*/) {
         if (tokenIn == SUSDA) return amountTokenToDeposit;
-        return PMath.divDown(amountTokenToDeposit, _getExchangeRate());
+        return IAvalonSaving(SAVING).getSharesByAmount(amountTokenToDeposit);
     }
 
     function _previewRedeem(

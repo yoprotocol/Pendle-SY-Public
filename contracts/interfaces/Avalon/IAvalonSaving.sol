@@ -2,7 +2,9 @@
 pragma solidity ^0.8.0;
 
 interface IAvalonSaving {
-    function totalUnderlying() external view returns (uint256);
+    function getTotalUnderlying() external view returns (uint256);
     function totalsUSDaLockedAmount() external view returns (uint256);
     function mint(uint256 amount) external;
+    function getSharesByAmount(uint256 _amount) external view returns (uint256);
+    function getAmountByShares(uint256 _shares) external view returns (uint256);
 }
