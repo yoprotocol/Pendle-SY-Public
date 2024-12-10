@@ -16,7 +16,7 @@ contract PendleClisBNBSY is SYBaseUpg {
 
     address public constant DELEGATEE = 0xb1E6d401a202335403A6d19b9C2aC185605DC64B;
 
-    constructor() SYBaseUpg(CLIS_BNB) {}
+    constructor() SYBaseUpg(SLIS_BNB) {}
 
     /*///////////////////////////////////////////////////////////////
                     DEPOSIT/REDEEM USING BASE TOKENS
