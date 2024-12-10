@@ -7,8 +7,6 @@ import "../../../../interfaces/Lista/IListaClisBNBSwap.sol";
 import "../../../../interfaces/Lista/IListaDAO.sol";
 
 contract PendleClisBNBSY is SYBaseUpg {
-    address public constant LISTA_DAO = 0xB68443Ee3e828baD1526b3e0Bdf2Dfc6b1975ec4;
-
     address public constant LISTA_STAKE_MANAGER = 0x1adB950d8bB3dA4bE104211D5AB038628e477fE6;
     address public constant SLIS_BNB = 0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B;
     address public constant CLIS_BNB = 0x4b30fcAA7945fE9fDEFD2895aae539ba102Ed6F6;
@@ -17,6 +15,11 @@ contract PendleClisBNBSY is SYBaseUpg {
     address public constant DELEGATEE = 0xb1E6d401a202335403A6d19b9C2aC185605DC64B;
 
     constructor() SYBaseUpg(SLIS_BNB) {}
+
+    function initialize() external initializer {
+        __SYBaseUpg_init("SY Lista collateral BNB", "SY-clisBNB");
+        _safeApproveInf(SLIS_BNB, CLIS_BNB_SWAP);
+    }
 
     /*///////////////////////////////////////////////////////////////
                     DEPOSIT/REDEEM USING BASE TOKENS
