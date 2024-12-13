@@ -2,6 +2,8 @@
 
 This repository contains the Standardized Yield (SY) smart contracts of Pendle Protocol, which serve as wrappers around various yield-bearing tokens to standardize their interfaces and behaviors.
 
+For Pendle's core protocol contracts, please refer to [pendle-core-v2-public](https://github.com/pendle-finance/pendle-core-v2-public).
+
 ## Overview
 
 The SY contracts provide a unified interface for interacting with different yield-bearing tokens across DeFi protocols, including:
@@ -40,3 +42,4 @@ BUSL-1.1
 - Website: https://pendle.finance
 - Documentation: https://docs.pendle.finance/Developers/Overview
 - GitHub: https://github.com/pendle-finance/pendle-sy
+- Core Contracts: https://github.com/pendle-finance/pendle-core-v2-public
