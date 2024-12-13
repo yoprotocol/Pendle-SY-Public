@@ -2,19 +2,24 @@
 pragma solidity ^0.8.17;
 
 import "./PendleAerodromeZapHelper.sol";
+import "./PendleAerodromeVolatilePreview.sol";
+
 import "../../SYBaseWithRewardsUpg.sol";
 import "../../../../interfaces/Aerodrome/IAerodromeGauge.sol";
 
 contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHelper {
     address public immutable gauge;
     address public immutable rewardToken;
+    address public immutable previewHelper;
 
     constructor(
         address _router,
-        address _gauge
+        address _gauge,
+        address _previewHelper
     ) SYBaseUpg(IAerodromeGauge(_gauge).stakingToken()) PendleAerodromeZapHelper(_router, yieldToken) {
         gauge = _gauge;
         rewardToken = IAerodromeGauge(_gauge).rewardToken();
+        previewHelper = _previewHelper;
     }
 
     function initialize(string memory _name, string memory _symbol) external initializer {
@@ -44,12 +49,16 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
                 MISC FUNCTIONS FOR METADATA
     //////////////////////////////////////////////////////////////*/
 
-    function _previewDeposit(address tokenIn, uint256 amountTokenToDeposit) internal view override returns (uint256) {}
+    function _previewDeposit(address tokenIn, uint256 amountTokenToDeposit) internal view override returns (uint256) {
+        return PendleAerodomeVolatilePreview(previewHelper).previewZapIn(pool, tokenIn, amountTokenToDeposit);
+    }
 
     function _previewRedeem(
         address tokenOut,
         uint256 amountSharesToRedeem
-    ) internal view override returns (uint256 amountTokenOut) {}
+    ) internal view override returns (uint256 amountTokenOut) {
+        return PendleAerodomeVolatilePreview(previewHelper).previewZapOut(pool, tokenOut, amountSharesToRedeem);
+    }
 
     /*///////////////////////////////////////////////////////////////
                                EXCHANGE-RATE
