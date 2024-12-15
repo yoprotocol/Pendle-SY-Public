@@ -118,13 +118,13 @@ abstract contract PendleAerodromeZapHelper is TokenHelper {
 
     function _getVolatileZapInAmount(address tokenIn, uint256 amountIn) private view returns (uint256) {
         (uint256 reserve0, uint256 reserve1, ) = IAerodromePool(pool).getReserves();
-        uint256 fee = IAerodromeFactory(factory).getFee(pool, false) * ONE / ORIGINAL_DENOMINATOR;
+        uint256 fee = (IAerodromeFactory(factory).getFee(pool, false) * ONE) / ORIGINAL_DENOMINATOR;
 
         uint256 reserve = (tokenIn == token0 ? reserve0 : reserve1);
         uint256 a = PMath.square((TWO - fee) * reserve) + 4 * PMath.square(ONE - fee) * amountIn * reserve;
         uint256 b = reserve * (TWO - fee);
         uint256 c = 2 * PMath.square(ONE - fee);
-        return (PMath.sqrt(a) - b) * ONE / c;
+        return ((PMath.sqrt(a) - b) * ONE) / c;
     }
 
     /*///////////////////////////////////////////////////////////////

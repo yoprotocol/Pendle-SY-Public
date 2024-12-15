@@ -40,7 +40,7 @@ contract PendleAerodomeVolatilePreview {
         uint256 b = reserve * (TWO - fee);
         uint256 c = 2 * PMath.square(ONE - fee);
 
-        return (PMath.sqrt(a) - b) * ONE / c;
+        return ((PMath.sqrt(a) - b) * ONE) / c;
     }
 
     /**

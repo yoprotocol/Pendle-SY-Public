@@ -16,7 +16,10 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
         address _router,
         address _gauge,
         address _previewHelper
-    ) PendleAerodromeZapHelper(_router, IAerodromeGauge(_gauge).stakingToken()) SYBaseUpg(IAerodromeGauge(_gauge).stakingToken())  {
+    )
+        PendleAerodromeZapHelper(_router, IAerodromeGauge(_gauge).stakingToken())
+        SYBaseUpg(IAerodromeGauge(_gauge).stakingToken())
+    {
         gauge = _gauge;
         rewardToken = IAerodromeGauge(_gauge).rewardToken();
         previewHelper = _previewHelper;
