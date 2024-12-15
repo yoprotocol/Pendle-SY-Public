@@ -16,10 +16,10 @@ abstract contract PendleAerodromeZapHelper is TokenHelper {
     address public immutable token1;
 
     // ZAP CONST
-    uint256 internal constant FEE_DENOMINATOR = 10000;
-    uint256 internal constant ONE = 1 * FEE_DENOMINATOR;
-    uint256 internal constant TWO = 2 * FEE_DENOMINATOR;
-    uint256 internal constant FOUR = 4 * FEE_DENOMINATOR;
+    uint256 internal constant ORIGINAL_DENOMINATOR = 10000;
+    uint256 internal constant ONE = 1 * 1e6;
+    uint256 internal constant TWO = 2 * 1e6;
+    uint256 internal constant FOUR = 4 * 1e6;
 
     constructor(address _router, address _pool) {
         router = _router;
@@ -32,11 +32,15 @@ abstract contract PendleAerodromeZapHelper is TokenHelper {
     }
 
     function _zapIn(address tokenIn, uint256 amountIn) internal returns (uint256) {
+        assert(tokenIn == token0 || tokenIn == token1);
+
         (uint256 amount0ToAddLiq, uint256 amount1ToAddLiq) = _swapZapIn(tokenIn, amountIn);
         return _addLiquidity(amount0ToAddLiq, amount1ToAddLiq);
     }
 
     function _zapOut(address tokenOut, uint256 amountLpIn) internal returns (uint256) {
+        assert(tokenOut == token0 || tokenOut == token1);
+
         (uint256 amount0, uint256 amount1) = _removeLiquidity(amountLpIn);
         if (tokenOut == token0) {
             return amount0 + _swap(token1, amount1);
@@ -97,8 +101,9 @@ abstract contract PendleAerodromeZapHelper is TokenHelper {
     function _swap(address tokenIn, uint256 amountTokenIn) private returns (uint256) {
         address tokenOut = tokenIn == token0 ? token1 : token0;
         uint256 preBalance = _selfBalance(tokenOut);
+        uint256 expectedOut = IAerodromePool(pool).getAmountOut(amountTokenIn, tokenIn);
         IAerodromeRouter(router).UNSAFE_swapExactTokensForTokens(
-            ArrayLib.create(amountTokenIn),
+            ArrayLib.create(amountTokenIn, expectedOut),
             _getRoutes(tokenIn),
             address(this),
             type(uint256).max
@@ -113,13 +118,13 @@ abstract contract PendleAerodromeZapHelper is TokenHelper {
 
     function _getVolatileZapInAmount(address tokenIn, uint256 amountIn) private view returns (uint256) {
         (uint256 reserve0, uint256 reserve1, ) = IAerodromePool(pool).getReserves();
-        uint256 fee = IAerodromeFactory(factory).getFee(pool, false);
+        uint256 fee = IAerodromeFactory(factory).getFee(pool, false) * ONE / ORIGINAL_DENOMINATOR;
 
         uint256 reserve = (tokenIn == token0 ? reserve0 : reserve1);
-        uint256 a = PMath.square((TWO - fee) * reserve) + FOUR * PMath.square(ONE - fee) * amountIn * reserve;
+        uint256 a = PMath.square((TWO - fee) * reserve) + 4 * PMath.square(ONE - fee) * amountIn * reserve;
         uint256 b = reserve * (TWO - fee);
         uint256 c = 2 * PMath.square(ONE - fee);
-        return (PMath.sqrt(a) - b) / c;
+        return (PMath.sqrt(a) - b) * ONE / c;
     }
 
     /*///////////////////////////////////////////////////////////////

@@ -16,7 +16,7 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
         address _router,
         address _gauge,
         address _previewHelper
-    ) SYBaseUpg(IAerodromeGauge(_gauge).stakingToken()) PendleAerodromeZapHelper(_router, yieldToken) {
+    ) PendleAerodromeZapHelper(_router, IAerodromeGauge(_gauge).stakingToken()) SYBaseUpg(IAerodromeGauge(_gauge).stakingToken())  {
         gauge = _gauge;
         rewardToken = IAerodromeGauge(_gauge).rewardToken();
         previewHelper = _previewHelper;
@@ -25,12 +25,18 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
     function initialize(string memory _name, string memory _symbol) external initializer {
         __SYBaseUpg_init(_name, _symbol);
         _safeApproveInf(pool, gauge);
+        _safeApproveInf(pool, router);
         _safeApproveInf(token0, router);
         _safeApproveInf(token1, router);
     }
 
     function _deposit(address tokenIn, uint256 amountDeposited) internal virtual override returns (uint256) {
-        uint256 amountLpOut = _zapIn(tokenIn, amountDeposited);
+        uint256 amountLpOut;
+        if (tokenIn != pool) {
+            amountLpOut = _zapIn(tokenIn, amountDeposited);
+        } else {
+            amountLpOut = amountDeposited;
+        }
         IAerodromeGauge(gauge).deposit(amountLpOut);
         return amountLpOut;
     }
@@ -41,7 +47,11 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
         uint256 amountSharesToRedeem
     ) internal virtual override returns (uint256 amountTokenOut) {
         IAerodromeGauge(gauge).withdraw(amountSharesToRedeem);
-        amountTokenOut = _zapOut(tokenOut, amountSharesToRedeem);
+        if (tokenOut != pool) {
+            amountTokenOut = _zapOut(tokenOut, amountSharesToRedeem);
+        } else {
+            amountTokenOut = amountSharesToRedeem;
+        }
         _transferOut(tokenOut, receiver, amountTokenOut);
     }
 
@@ -50,6 +60,9 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
     //////////////////////////////////////////////////////////////*/
 
     function _previewDeposit(address tokenIn, uint256 amountTokenToDeposit) internal view override returns (uint256) {
+        if (tokenIn == pool) {
+            return amountTokenToDeposit;
+        }
         return PendleAerodomeVolatilePreview(previewHelper).previewZapIn(pool, tokenIn, amountTokenToDeposit);
     }
 
@@ -57,6 +70,9 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
         address tokenOut,
         uint256 amountSharesToRedeem
     ) internal view override returns (uint256 amountTokenOut) {
+        if (tokenOut == pool) {
+            return amountSharesToRedeem;
+        }
         return PendleAerodomeVolatilePreview(previewHelper).previewZapOut(pool, tokenOut, amountSharesToRedeem);
     }
 

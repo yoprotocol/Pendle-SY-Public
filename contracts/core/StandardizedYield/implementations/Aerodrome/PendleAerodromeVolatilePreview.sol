@@ -36,11 +36,11 @@ contract PendleAerodomeVolatilePreview {
 
     // @reference: https://www.notion.so/pendle/Research-Knowledge-Vault-c348747730e348c29ba363b19d0fe7e3?pvs=4#fde647f251d8464a93b7b2b6c86c8d5c
     function _getZapInSwapAmount(uint256 amountIn, uint256 reserve, uint256 fee) private pure returns (uint256) {
-        uint256 a = PMath.square((TWO - fee) * reserve) + FOUR * PMath.square(ONE - fee) * amountIn * reserve;
+        uint256 a = PMath.square((TWO - fee) * reserve) + 4 * PMath.square(ONE - fee) * amountIn * reserve;
         uint256 b = reserve * (TWO - fee);
         uint256 c = 2 * PMath.square(ONE - fee);
 
-        return (PMath.sqrt(a) - b) / c;
+        return (PMath.sqrt(a) - b) * ONE / c;
     }
 
     /**
