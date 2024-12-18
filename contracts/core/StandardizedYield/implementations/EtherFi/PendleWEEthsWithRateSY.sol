@@ -64,4 +64,13 @@ contract PendleWEEthsWithRateSY is PendleERC20SYUpg {
     function getTokensIn() public pure override returns (address[] memory res) {
         return ArrayLib.create(weETHs, WETH, WEETH, EETH, WSTETH);
     }
+
+    function assetInfo()
+        external
+        pure
+        override
+        returns (AssetType assetType, address assetAddress, uint8 assetDecimals)
+    {
+        return (AssetType.TOKEN, NATIVE, 18);
+    }
 }
