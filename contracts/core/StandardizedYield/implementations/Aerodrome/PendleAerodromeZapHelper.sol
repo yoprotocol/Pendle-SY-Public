@@ -116,6 +116,9 @@ abstract contract PendleAerodromeZapHelper is TokenHelper {
                                 ZAP MATH
     //////////////////////////////////////////////////////////////*/
 
+    // @notice: This function has its peak of value at ```uint256 a = ...``` with magnitude of ONE^2 * max(x,y) ^ 2
+    // With limitation of 2^256 ~ 10^77, ONE = 1e6 for better precision, we manage to leave about 10^32 decimals for max(x,y)
+    // Which is sufficient in most case
     function _getVolatileZapInAmount(address tokenIn, uint256 amountIn) private view returns (uint256) {
         (uint256 reserve0, uint256 reserve1, ) = IAerodromePool(pool).getReserves();
         uint256 fee = (IAerodromeFactory(factory).getFee(pool, false) * ONE) / ORIGINAL_DENOMINATOR;
