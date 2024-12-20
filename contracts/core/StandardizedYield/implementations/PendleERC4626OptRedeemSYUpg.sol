@@ -79,7 +79,7 @@ contract PendleERC4626OptRedeemSYUpg is SYBaseUpg {
     }
 
     function isValidTokenOut(address token) public view override returns (bool) {
-        return isRedeemable ? (token == yieldToken || token == asset) : token == yieldToken;
+        return token == yieldToken || (isRedeemable ? token == asset : false);
     }
 
     function assetInfo() external view returns (AssetType assetType, address assetAddress, uint8 assetDecimals) {
