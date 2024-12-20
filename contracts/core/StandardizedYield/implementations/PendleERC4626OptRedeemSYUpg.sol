@@ -17,6 +17,11 @@ contract PendleERC4626OptRedeemSYUpg is SYBaseUpg {
         _safeApproveInf(asset, _erc4626);
     }
 
+    function initialize(string memory _name, string memory _symbol) initializer external {
+        __SYBaseUpg_init(_name, _symbol);
+        _safeApproveInf(asset, yieldToken);
+    }
+
     function setIsRedeemable(bool _isRedeemable) external onlyOwner {
         isRedeemable = _isRedeemable;
         emit SetIsRedeemable(_isRedeemable);
