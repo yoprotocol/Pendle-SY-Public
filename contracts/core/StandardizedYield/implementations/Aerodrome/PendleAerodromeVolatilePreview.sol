@@ -7,7 +7,7 @@ import "../../../../interfaces/Aerodrome/IAerodromeRouter.sol";
 import "../../../../interfaces/Aerodrome/IAerodromeFactory.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
 
-contract PendleAerodomeVolatilePreview {
+contract PendleAerodromeVolatilePreview {
     address public immutable factory;
 
     uint256 private constant FEE_DENOMINATOR = 10000;

@@ -68,7 +68,7 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
         if (tokenIn == pool) {
             return amountTokenToDeposit;
         }
-        return PendleAerodomeVolatilePreview(previewHelper).previewZapIn(pool, tokenIn, amountTokenToDeposit);
+        return PendleAerodromeVolatilePreview(previewHelper).previewZapIn(pool, tokenIn, amountTokenToDeposit);
     }
 
     function _previewRedeem(
@@ -78,7 +78,7 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
         if (tokenOut == pool) {
             return amountSharesToRedeem;
         }
-        return PendleAerodomeVolatilePreview(previewHelper).previewZapOut(pool, tokenOut, amountSharesToRedeem);
+        return PendleAerodromeVolatilePreview(previewHelper).previewZapOut(pool, tokenOut, amountSharesToRedeem);
     }
 
     /*///////////////////////////////////////////////////////////////
