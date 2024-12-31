@@ -23,6 +23,8 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
         gauge = _gauge;
         rewardToken = IAerodromeGauge(_gauge).rewardToken();
         previewHelper = _previewHelper;
+
+        require(IAerodromePool(pool).stable() == false, "AV-SY: Invalid pool");
     }
 
     function initialize(string memory _name, string memory _symbol) external initializer {
@@ -120,6 +122,6 @@ contract PendleAerodromeVolatileSY is SYBaseWithRewardsUpg, PendleAerodromeZapHe
     }
 
     function assetInfo() external view returns (AssetType assetType, address assetAddress, uint8 assetDecimals) {
-        return (AssetType.TOKEN, pool, IERC20Metadata(pool).decimals());
+        return (AssetType.LIQUIDITY, pool, IERC20Metadata(pool).decimals());
     }
 }
