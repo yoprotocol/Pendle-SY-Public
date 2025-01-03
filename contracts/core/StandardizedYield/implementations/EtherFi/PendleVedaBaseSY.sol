@@ -11,13 +11,16 @@ abstract contract PendleVedaBaseSY is PendleERC20SYUpg {
     // solhint-disable immutable-vars-naming
     // solhint-disable const-name-snakecase
     // solhint-disable ordering
+    uint256 public constant PREMIUM_SHARE_BPS = 10 ** 4;
 
+    uint256 public immutable ONE_SHARE;
     address public immutable vedaTeller;
     address public immutable vedaAccountant;
 
-    constructor(address _boringVault, address _vedaTeller) PendleERC20SYUpg(_boringVault) {
+    constructor(address _boringVault, address _vedaTeller, uint256 _ONE_SHARE) PendleERC20SYUpg(_boringVault) {
         vedaTeller = _vedaTeller;
         vedaAccountant = IVedaTeller(_vedaTeller).accountant();
+        ONE_SHARE = _ONE_SHARE;
     }
 
     function _deposit(
@@ -38,6 +41,9 @@ abstract contract PendleVedaBaseSY is PendleERC20SYUpg {
             return amountTokenToDeposit;
         }
         uint256 rate = IVedaAccountant(vedaAccountant).getRateInQuoteSafe(tokenIn);
-        amountSharesOut = amountTokenToDeposit.divDown(rate);
+        amountSharesOut = (amountTokenToDeposit * ONE_SHARE) / rate;
+
+        IVedaTeller.Asset memory data = IVedaTeller(vedaTeller).assetData(tokenIn);
+        amountSharesOut = (amountSharesOut * (PREMIUM_SHARE_BPS - data.sharePremium)) / PREMIUM_SHARE_BPS;
     }
 }

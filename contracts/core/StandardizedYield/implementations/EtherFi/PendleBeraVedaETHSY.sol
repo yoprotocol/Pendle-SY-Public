@@ -16,7 +16,7 @@ contract PendleBeraVedaETHSY is PendleVedaBaseSY {
     address public constant EETH = 0x35fA164735182de50811E8e2E824cFb9B6118ac2;
     address public constant WSTETH = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0;
 
-    constructor() PendleVedaBaseSY(liquidBeraETH, teller) {}
+    constructor() PendleVedaBaseSY(liquidBeraETH, teller, 1 ether) {}
 
     function approveAllForTeller() external {
         _safeApproveInf(WETH, liquidBeraETH);
