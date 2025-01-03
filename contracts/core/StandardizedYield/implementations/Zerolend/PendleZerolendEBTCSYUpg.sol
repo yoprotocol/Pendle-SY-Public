@@ -48,10 +48,7 @@ contract PendleZerolendEBTCSYUpg is PendleAaveV3WithRewardsSYUpg {
         uint256 amountDeposited
     ) internal virtual override returns (uint256 /*amountSharesOut*/) {
         if (tokenIn != eBTC && tokenIn != aToken) {
-            (tokenIn, amountDeposited) = (
-                eBTC,
-                IVedaTeller(vedaTeller).deposit(tokenIn, amountDeposited, 0)
-            );
+            (tokenIn, amountDeposited) = (eBTC, IVedaTeller(vedaTeller).deposit(tokenIn, amountDeposited, 0));
         }
 
         return super._deposit(tokenIn, amountDeposited);
