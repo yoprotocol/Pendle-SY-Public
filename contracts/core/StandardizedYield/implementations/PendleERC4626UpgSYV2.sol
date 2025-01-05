@@ -12,7 +12,7 @@ contract PendleERC4626SYUpg is SYBaseUpg {
         asset = IERC4626(_erc4626).asset();
     }
 
-    function initialize(string memory _name, string memory _symbol) external initializer {
+    function initialize(string memory _name, string memory _symbol) external virtual initializer {
         __SYBaseUpg_init(_name, _symbol);
         _safeApproveInf(asset, yieldToken);
     }
@@ -48,7 +48,7 @@ contract PendleERC4626SYUpg is SYBaseUpg {
     function _previewDeposit(
         address tokenIn,
         uint256 amountTokenToDeposit
-    ) internal view override returns (uint256 /*amountSharesOut*/) {
+    ) internal view virtual override returns (uint256 /*amountSharesOut*/) {
         if (tokenIn == yieldToken) return amountTokenToDeposit;
         else return IERC4626(yieldToken).previewDeposit(amountTokenToDeposit);
     }
@@ -56,7 +56,7 @@ contract PendleERC4626SYUpg is SYBaseUpg {
     function _previewRedeem(
         address tokenOut,
         uint256 amountSharesToRedeem
-    ) internal view override returns (uint256 /*amountTokenOut*/) {
+    ) internal view virtual override returns (uint256 /*amountTokenOut*/) {
         if (tokenOut == yieldToken) return amountSharesToRedeem;
         else return IERC4626(yieldToken).previewRedeem(amountSharesToRedeem);
     }
@@ -81,7 +81,12 @@ contract PendleERC4626SYUpg is SYBaseUpg {
         return token == yieldToken || token == asset;
     }
 
-    function assetInfo() external view returns (AssetType assetType, address assetAddress, uint8 assetDecimals) {
+    function assetInfo()
+        external
+        view
+        virtual
+        returns (AssetType assetType, address assetAddress, uint8 assetDecimals)
+    {
         return (AssetType.TOKEN, asset, IERC20Metadata(asset).decimals());
     }
 }
