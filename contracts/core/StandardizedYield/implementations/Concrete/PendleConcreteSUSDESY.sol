@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity ^0.8.23;
 
-import "../PendleERC4626UpgSYV2.sol";
+import "./PendleConcreteVaultSY.sol";
 
 // @note: Concrete vault has 27 decimals !!!
-contract PendleConcreteSUSDESY is PendleERC4626SYUpg {
+contract PendleConcreteSUSDESY is PendleConcreteVaultSY {
     using PMath for uint256;
 
     // asset = SUSDE
@@ -12,7 +12,7 @@ contract PendleConcreteSUSDESY is PendleERC4626SYUpg {
     address public constant SUSDE = 0x9D39A5DE30e57443BfF2A8307A4256c8797A3497;
     address public constant USDE = 0x4c9EDD5852cd905f086C759E8383e09bff1E68B3;
 
-    constructor(address _concreteVault) PendleERC4626SYUpg(_concreteVault) {}
+    constructor(address _concreteVault) PendleConcreteVaultSY(_concreteVault) {}
 
     function initialize(string memory _name, string memory _symbol) external virtual override initializer {
         __SYBaseUpg_init(_name, _symbol);
