@@ -32,7 +32,7 @@ contract PendleERC4626SYUpg is SYBaseUpg {
         address receiver,
         address tokenOut,
         uint256 amountSharesToRedeem
-    ) internal override returns (uint256 amountTokenOut) {
+    ) internal virtual override returns (uint256 amountTokenOut) {
         if (tokenOut == yieldToken) {
             amountTokenOut = amountSharesToRedeem;
             _transferOut(yieldToken, receiver, amountTokenOut);
