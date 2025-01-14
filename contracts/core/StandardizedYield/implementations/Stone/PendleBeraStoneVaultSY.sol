@@ -62,11 +62,7 @@ contract PendleBeraStoneVaultSY is PendleERC20SYUpg, IPTokenWithSupplyCap {
             uint256 price = IStoneVault(STONE_VAULT).roundPricePerShare(rID);
             (tokenIn, amountTokenToDeposit) = (STONE, amountTokenToDeposit.divDown(price));
         }
-
-        uint256 rawAmountOut = IStoneBeraVault(BERA_STONE_VAULT).previewDeposit(tokenIn, amountTokenToDeposit);
-        uint256 feeRate = IStoneBeraVault(BERA_STONE_VAULT).feeRate(tokenIn);
-
-        return rawAmountOut - rawAmountOut * feeRate / 1e6;
+        return IStoneBeraVault(BERA_STONE_VAULT).previewDeposit(tokenIn, amountTokenToDeposit);
     }
 
     function getTokensIn() public view virtual override returns (address[] memory res) {
