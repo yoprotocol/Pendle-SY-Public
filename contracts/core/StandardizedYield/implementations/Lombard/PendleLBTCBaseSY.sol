@@ -99,7 +99,7 @@ contract PendleLBTCBaseSY is SYBaseUpg, IPTokenWithSupplyCap {
     }
 
     function getTokensIn() public pure override returns (address[] memory res) {
-        return ArrayLib.create(CBBTC, LBTC);
+        return ArrayLib.create(LBTC);
     }
 
     function getTokensOut() public pure override returns (address[] memory res) {
@@ -107,7 +107,7 @@ contract PendleLBTCBaseSY is SYBaseUpg, IPTokenWithSupplyCap {
     }
 
     function isValidTokenIn(address token) public pure override returns (bool) {
-        return token == CBBTC || token == LBTC;
+        return token == LBTC;
     }
 
     function isValidTokenOut(address token) public pure override returns (bool) {
