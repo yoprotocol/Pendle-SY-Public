@@ -6,7 +6,7 @@ import "../../../../interfaces/Stone/IStoneVault.sol";
 import "../../../../interfaces/Stone/IStoneBeraVault.sol";
 import "../../../../interfaces/IPTokenWithSupplyCap.sol";
 
-contract PendleBeraStoneSY is PendleERC20SYUpg, IPTokenWithSupplyCap {
+contract PendleBeraStoneVaultSY is PendleERC20SYUpg, IPTokenWithSupplyCap {
     using PMath for uint256;
 
     address public constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
