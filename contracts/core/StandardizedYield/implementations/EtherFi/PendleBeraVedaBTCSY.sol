@@ -18,7 +18,7 @@ contract PendleBeraVedaBTCSY is PendleVedaBaseSY {
     address public constant LBTC = 0x8236a87084f8B84306f72007F36F2618A5634494;
     address public constant CBBTC = 0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf;
 
-    constructor() PendleVedaBaseSY(liquidBeraBTC, teller, 10**8) {}
+    constructor() PendleVedaBaseSY(liquidBeraBTC, teller, 10 ** 8) {}
 
     function isValidTokenIn(address token) public pure override returns (bool) {
         return token == liquidBeraBTC || token == EBTC || token == WBTC || token == LBTC || token == CBBTC;
