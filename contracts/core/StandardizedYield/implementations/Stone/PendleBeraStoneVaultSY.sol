@@ -4,8 +4,9 @@ pragma solidity ^0.8.17;
 import "../PendleERC20SYUpg.sol";
 import "../../../../interfaces/Stone/IStoneVault.sol";
 import "../../../../interfaces/Stone/IStoneBeraVault.sol";
+import "../../../../interfaces/IPTokenWithSupplyCap.sol";
 
-contract PendleBeraStoneSY is PendleERC20SYUpg {
+contract PendleBeraStoneSY is PendleERC20SYUpg, IPTokenWithSupplyCap {
     using PMath for uint256;
 
     address public constant WETH = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
@@ -62,7 +63,10 @@ contract PendleBeraStoneSY is PendleERC20SYUpg {
             (tokenIn, amountTokenToDeposit) = (STONE, amountTokenToDeposit.divDown(price));
         }
 
-        return IStoneBeraVault(BERA_STONE_VAULT).previewDeposit(tokenIn, amountTokenToDeposit);
+        uint256 rawAmountOut = IStoneBeraVault(BERA_STONE_VAULT).previewDeposit(tokenIn, amountTokenToDeposit);
+        uint256 feeRate = IStoneBeraVault(BERA_STONE_VAULT).feeRate(tokenIn);
+
+        return rawAmountOut - rawAmountOut * feeRate / 1e6;
     }
 
     function getTokensIn() public view virtual override returns (address[] memory res) {
@@ -71,5 +75,13 @@ contract PendleBeraStoneSY is PendleERC20SYUpg {
 
     function isValidTokenIn(address token) public view virtual override returns (bool) {
         return token == NATIVE || token == WETH || token == STONE || token == BERA_STONE;
+    }
+
+    function getAbsoluteSupplyCap() external view returns (uint256) {
+        return IStoneBeraVault(BERA_STONE_VAULT).cap();
+    }
+
+    function getAbsoluteTotalSupply() external view returns (uint256) {
+        return IERC20(yieldToken).totalSupply();
     }
 }

@@ -12,4 +12,8 @@ interface IStoneBeraVault {
         address _asset,
         uint256 _amount
     ) external view returns (uint256 shares);
+
+    function cap() external view returns (uint256);
+
+    function feeRate(address) external view returns (uint256);
 }
