@@ -9,7 +9,6 @@ import "../../../../interfaces/Lista/IListaDAO.sol";
 contract PendleClisBNBSY is SYBaseUpg {
     address public constant LISTA_STAKE_MANAGER = 0x1adB950d8bB3dA4bE104211D5AB038628e477fE6;
     address public constant SLIS_BNB = 0xB0b84D294e0C75A6abe60171b70edEb2EFd14A1B;
-    address public constant CLIS_BNB = 0x4b30fcAA7945fE9fDEFD2895aae539ba102Ed6F6;
     address public constant CLIS_BNB_SWAP = 0xfD31e1C5e5571f8E7FE318f80888C1e6da97819b;
 
     address public constant DELEGATEE = 0xb1E6d401a202335403A6d19b9C2aC185605DC64B;
@@ -58,6 +57,10 @@ contract PendleClisBNBSY is SYBaseUpg {
         return IListaStakeManager(LISTA_STAKE_MANAGER).convertSnBnbToBnb(1 ether);
     }
 
+    /*///////////////////////////////////////////////////////////////
+                MISC FUNCTIONS FOR METADATA
+    //////////////////////////////////////////////////////////////*/
+
     function _previewDeposit(
         address tokenIn,
         uint256 amountTokenToDeposit
@@ -67,10 +70,6 @@ contract PendleClisBNBSY is SYBaseUpg {
         }
         return amountTokenToDeposit;
     }
-
-    /*///////////////////////////////////////////////////////////////
-                MISC FUNCTIONS FOR METADATA
-    //////////////////////////////////////////////////////////////*/
 
     function _previewRedeem(
         address /*tokenOut*/,
