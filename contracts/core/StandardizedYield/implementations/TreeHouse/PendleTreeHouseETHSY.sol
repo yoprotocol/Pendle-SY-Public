@@ -5,11 +5,12 @@ import "../../SYBaseUpg.sol";
 import "../../../../interfaces/IWstETH.sol";
 import "../../../../interfaces/IStETH.sol";
 import "../../../../interfaces/IERC4626.sol";
+import "../../../../interfaces/IPTokenWithSupplyCap.sol";
 import "../../../../interfaces/TreeHouse/ITreeHouseRouter.sol";
 import "../../../../interfaces/TreeHouse/ITreeHouseFastLane.sol";
 import "../../../../interfaces/TreeHouse/ITreeHouseFastLaneFee.sol";
 
-contract PendleTreeHouseETHSY is SYBaseUpg {
+contract PendleTreeHouseETHSY is SYBaseUpg, IPTokenWithSupplyCap {
     // solhint-disable immutable-vars-naming
     address public constant TREEHOUSE_ROUTER = 0xeFA3fa8e85D2b3CfdB250CdeA156c2c6C90628F5;
     address public constant TREEHOUSE_FASTLANE = 0x829525417Cd78CBa0f99A8736426fC299506C0d6;
@@ -129,5 +130,14 @@ contract PendleTreeHouseETHSY is SYBaseUpg {
         assetType = AssetType.TOKEN;
         assetAddress = STETH;
         assetDecimals = IERC20Metadata(STETH).decimals();
+    }
+
+    function getAbsoluteSupplyCap() external view returns (uint256) {
+        uint256 capInETH = ITreeHouseRouter(TREEHOUSE_ROUTER).depositCapInEth();
+        return IERC4626(TETH).convertToShares(IStETH(STETH).getSharesByPooledEth(capInETH));
+    }
+
+    function getAbsoluteTotalSupply() external view returns (uint256) {
+        return IERC4626(TETH).convertToShares(IERC20(IERC4626(TETH).asset()).totalSupply());
     }
 }
