@@ -20,7 +20,7 @@ contract PendleMellowRSENASY is PendleMellowVaultSYBaseV2Upg {
         address _depositToken,
         address _vault,
         uint256 _interfaceVersion
-    ) PendleMellowVaultSYBaseV2Upg(_vault, 0x5C22118237a31d43589793dc72AdC0E7730D63b7) {
+    ) PendleMellowVaultSYBaseV2Upg(_vault) {
         depositToken = _depositToken;
         if (_interfaceVersion > 1) {
             revert("invalid interface version");

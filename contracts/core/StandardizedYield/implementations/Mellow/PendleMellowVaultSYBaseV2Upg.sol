@@ -6,6 +6,7 @@ import "../../StEthHelper.sol";
 import "../../../../interfaces/IPTokenWithSupplyCap.sol";
 import "../../../../interfaces/Mellow/IMellowVaultConfigurator.sol";
 import "../../../../interfaces/IPPriceFeed.sol";
+import "../../../../interfaces/IERC4626.sol";
 
 /// @dev This SY implementation intends to ignore native interest from Mellow Vault's underlying
 abstract contract PendleMellowVaultSYBaseV2Upg is SYBaseUpg, IPTokenWithSupplyCap {
@@ -13,12 +14,10 @@ abstract contract PendleMellowVaultSYBaseV2Upg is SYBaseUpg, IPTokenWithSupplyCa
 
     // solhint-disable immutable-vars-naming
     address public immutable vault;
-    address public immutable configurator;
     address public pricingHelper;
 
-    constructor(address _vault, address _configurator) SYBaseUpg(_vault) {
+    constructor(address _vault) SYBaseUpg(_vault) {
         vault = _vault;
-        configurator = _configurator;
         _disableInitializers();
     }
 
@@ -91,7 +90,7 @@ abstract contract PendleMellowVaultSYBaseV2Upg is SYBaseUpg, IPTokenWithSupplyCa
     }
 
     function getAbsoluteSupplyCap() external view virtual returns (uint256) {
-        return IMellowVaultConfigurator(configurator).maximalTotalSupply();
+        return IERC4626(vault).maxMint(address(this));
     }
 
     function getAbsoluteTotalSupply() external view virtual returns (uint256) {

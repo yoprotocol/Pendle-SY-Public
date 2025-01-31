@@ -2,7 +2,6 @@
 pragma solidity ^0.8.0;
 
 import "./PendleMellowVaultSYBaseV2Upg.sol";
-import "../../../../interfaces/IERC4626.sol";
 
 contract PendleMellowSUSDESY is PendleMellowVaultSYBaseV2Upg {
     error MellowVaultHasInvalidAssets();
@@ -21,7 +20,7 @@ contract PendleMellowSUSDESY is PendleMellowVaultSYBaseV2Upg {
         address _erc4626,
         address _vault,
         uint256 _interfaceVersion
-    ) PendleMellowVaultSYBaseV2Upg(_vault, 0xB591373B5FAeB3A3F25AEAE2827534ccE74176A1) {
+    ) PendleMellowVaultSYBaseV2Upg(_vault) {
         erc4626 = _erc4626;
         asset = IERC4626(_erc4626).asset();
 
