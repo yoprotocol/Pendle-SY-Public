@@ -3,10 +3,10 @@ pragma solidity ^0.8.23;
 
 import "../PendleERC4626UpgSYV2.sol";
 
-contract PendleConcreteVaultSY is PendleERC4626SYUpg {
+contract PendleConcreteVaultSY is PendleERC4626UpgSYV2 {
     error ConcreteInsufficientInstantAmountOut();
 
-    constructor(address _concreteVault) PendleERC4626SYUpg(_concreteVault) {}
+    constructor(address _concreteVault) PendleERC4626UpgSYV2(_concreteVault) {}
 
     function _redeem(
         address receiver,
