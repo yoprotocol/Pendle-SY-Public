@@ -27,12 +27,7 @@ contract PendleMellowSUSDESY is PendleMellowVaultSYBaseV2Upg {
         }
         return super._deposit(tokenIn, amountDeposited);
     }
-
-    // function exchangeRate() public view virtual override returns (uint256 res) {
-    //     (uint256 tvl, uint256 supply) = _getMellowVaultTvl();
-    //     return IERC4626(erc4626).convertToAssets((tvl * PMath.ONE) / supply);
-    // }
-
+    
     function _previewDeposit(
         address tokenIn,
         uint256 amountTokenToDeposit
