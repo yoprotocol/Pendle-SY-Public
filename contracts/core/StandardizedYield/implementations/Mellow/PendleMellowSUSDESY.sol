@@ -15,4 +15,13 @@ contract PendleMellowSUSDESY is PendleMellowVaultERC4626SYUpg {
         assert(rateMellow == PMath.ONE);
         return IERC4626(erc4626).convertToAssets(rateMellow);
     }
+
+
+    function getTokensIn() public view virtual override returns (address[] memory res) {
+        return ArrayLib.create(vault);
+    }
+
+    function isValidTokenIn(address token) public view virtual override returns (bool) {
+        return token == vault;
+    }
 }

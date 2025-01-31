@@ -13,4 +13,12 @@ contract PEndleMellowRSENASY is PendleMellowVaultERC20SYUpg {
     function exchangeRate() public view virtual override returns (uint256 res) {
         return PMath.ONE;
     }
+
+    function getTokensIn() public view virtual override returns (address[] memory res) {
+        return ArrayLib.create(vault);
+    }
+
+    function isValidTokenIn(address token) public view virtual override returns (bool) {
+        return token == vault;
+    }
 }
