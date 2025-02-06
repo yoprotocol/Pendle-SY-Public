@@ -20,10 +20,9 @@ library PendleCurve2TokenLib {
         uint256 amp = ICurvePoolDynamic(pool).A_precise();
         uint256[] memory _amounts = _getTokenAmounts(pool, token, amount);
         uint256[] memory old_balances = _getBalances(pool);
-        uint256[] memory new_balances;
-        memcpy(new_balances, old_balances);
+        uint256[] memory new_balances = memcpy(old_balances);
 
-        uint256 D0 = _get_D_mem(old_balances, amp);
+        uint256 D0 = _get_D_mem(pool, old_balances, amp);
         uint256 total_supply = IERC20(pool).totalSupply();
 
         for (uint256 i = 0; i < NCOIN; ++i) {
@@ -31,10 +30,10 @@ library PendleCurve2TokenLib {
             new_balances[i] += _amounts[i];
         }
 
-        uint256 D1 = _get_D_mem(new_balances, amp);
+        uint256 D1 = _get_D_mem(pool, new_balances, amp);
         assert(D1 > D0);
 
-        uint256[] memory fees;
+        uint256[] memory fees = new uint256[](2);
 
         // skip total_supply > 0 check
         uint256 fee = (ICurvePoolDynamic(pool).fee() * NCOIN) / (4 * (NCOIN - 1));
@@ -51,14 +50,15 @@ library PendleCurve2TokenLib {
             fees[i] = (fee * difference) / FEE_DENOMINATOR;
             new_balances[i] -= fees[i];
         }
-        uint256 D2 = _get_D_mem(new_balances, amp);
-        return (total_supply * (D2 - D0)) / D0;
+        uint256 D2 = _get_D_mem(pool, new_balances, amp);
+        return (    total_supply * (D2 - D0)) / D0;
     }
 
-    function _get_D_mem(uint256[] memory balances, uint256 _amp) internal pure returns (uint256) {
+    function _get_D_mem(address pool, uint256[] memory balances, uint256 _amp) internal view returns (uint256) {
         uint256[] memory _xp = new uint256[](NCOIN);
-        _xp[0] = (RATE_0 * balances[0]) / PRECISION;
-        _xp[1] = (RATE_1 * balances[1]) / PRECISION;
+        uint256[] memory rates = ICurvePoolDynamic(pool).stored_rates();
+        _xp[0] = (rates[0] * balances[0]) / PRECISION;
+        _xp[1] = (rates[1] * balances[1]) / PRECISION;
 
         return _get_D(_xp, _amp);
     }
@@ -99,12 +99,13 @@ library PendleCurve2TokenLib {
     }
 
     function _getBalances(address pool) internal view returns (uint256[] memory balances) {
+        balances = new uint256[](2);
         balances[0] = ICurvePoolDynamic(pool).balances(0);
         balances[1] = ICurvePoolDynamic(pool).balances(1);
     }
 
-    function memcpy(uint256[] memory a, uint256[] memory b) internal pure {
-        b = new uint256[](NCOIN);
+    function memcpy(uint256[] memory b) internal pure returns (uint256[] memory a) {
+        a = new uint256[](NCOIN);
         for (uint256 i = 0; i < NCOIN; ++i) {
             a[i] = b[i];
         }

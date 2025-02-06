@@ -19,6 +19,7 @@ contract PendleCurvePool2TokenSYUpg is SYBaseWithRewardsUpg {
     address public immutable token1;
 
     constructor(address _gauge) SYBaseUpg(_gauge) {
+        gauge = _gauge;
         lp = ICurveGauge(_gauge).lp_token();
         token0 = ICurvePoolDynamic(lp).coins(0);
         token1 = ICurvePoolDynamic(lp).coins(1);
@@ -53,7 +54,7 @@ contract PendleCurvePool2TokenSYUpg is SYBaseWithRewardsUpg {
         if (tokenOut != gauge) {
             ICurveGauge(gauge).withdraw(amountSharesToRedeem);
         }
-        if (tokenOut != lp) {
+        if (tokenOut != lp && tokenOut != gauge) {
             amountTokenOut = ICurvePoolDynamic(lp).remove_liquidity_one_coin(
                 amountSharesToRedeem,
                 __getCurveTokenId(tokenOut),

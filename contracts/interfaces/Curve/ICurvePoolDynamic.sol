@@ -40,4 +40,6 @@ interface ICurvePoolDynamic {
     function balances(uint256 i) external view returns (uint256);
 
     function A_precise() external view returns (uint256);
+
+    function stored_rates() external view returns (uint256[] memory);
 }
