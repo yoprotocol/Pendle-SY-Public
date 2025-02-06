@@ -38,3 +38,4 @@ draft/
 
 deployments/**/*.ts
 ignore-resources/
+flatten-source/
