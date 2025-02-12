@@ -58,10 +58,12 @@ contract PendleCurvePool2TokenSYUpg is SYBaseWithRewardsUpg {
             amountTokenOut = ICurvePoolDynamic(lp).remove_liquidity_one_coin(
                 amountSharesToRedeem,
                 __getCurveTokenId(tokenOut),
-                0
+                0,
+                receiver
             );
+        } else {
+            _transferOut(tokenOut, receiver, amountTokenOut);
         }
-        _transferOut(tokenOut, receiver, amountTokenOut);
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -69,8 +71,8 @@ contract PendleCurvePool2TokenSYUpg is SYBaseWithRewardsUpg {
     //////////////////////////////////////////////////////////////*/
 
     function exchangeRate() public view virtual override returns (uint256) {
+        // This is subjected to Curve's known issue of re-entrancy. Be cautious on pool with raw ETH, token with transfer hook,...
         return ICurvePoolDynamic(lp).get_virtual_price();
-        // return PMath.ONE; // points only
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -130,6 +132,7 @@ contract PendleCurvePool2TokenSYUpg is SYBaseWithRewardsUpg {
     }
 
     function assetInfo() external view returns (AssetType assetType, address assetAddress, uint8 assetDecimals) {
+        // The definition here implies that 1 SY = 1 LP with no direct correlation between price and exchangeRate()
         return (AssetType.LIQUIDITY, lp, 18);
     }
 
