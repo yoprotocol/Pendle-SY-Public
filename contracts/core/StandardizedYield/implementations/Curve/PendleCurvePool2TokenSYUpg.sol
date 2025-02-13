@@ -5,11 +5,13 @@ import "./PendleCurve2TokenLib.sol";
 import "../../SYBaseWithRewardsUpg.sol";
 import "../../../../interfaces/Curve/ICurveGauge.sol";
 import "../../../../interfaces/Curve/ICurvePoolDynamic.sol";
+import "../../../../interfaces/Curve/ICurveMinter.sol";
 
 contract PendleCurvePool2TokenSYUpg is SYBaseWithRewardsUpg {
     using PMath for uint256;
 
     address public constant CRV = 0xD533a949740bb3306d119CC777fa900bA034cd52;
+    address public constant MINTER = 0xd061D61a4d941c39E5453435B6345Dc261C2fcE0;
 
     // solhint-disable immutable-vars-naming
     address public immutable lp;
@@ -88,7 +90,8 @@ contract PendleCurvePool2TokenSYUpg is SYBaseWithRewardsUpg {
     }
 
     function _redeemExternalReward() internal override {
-        ICurveGauge(gauge).claim_rewards();
+        // ICurveGauge(gauge).claim_rewards();
+        ICurveMinter(MINTER).mint(gauge);
     }
 
     /*///////////////////////////////////////////////////////////////
