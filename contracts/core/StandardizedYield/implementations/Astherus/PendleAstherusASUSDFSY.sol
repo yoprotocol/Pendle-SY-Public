@@ -4,12 +4,12 @@ pragma solidity ^0.8.17;
 import "../../SYBaseUpg.sol";
 import "../../../../interfaces/Astherus/IAstherusEarn.sol";
 
-contract PendleAstherusAUSDFSY is SYBaseUpg {
-    address public constant AUSDF = 0x917AF46B3C3c6e1Bb7286B9F59637Fb7C65851Fb;
+contract PendleAstherusASUSDFSY is SYBaseUpg {
+    address public constant ASUSDF = 0x917AF46B3C3c6e1Bb7286B9F59637Fb7C65851Fb;
     address public constant USDF = 0x5A110fC00474038f6c02E89C707D638602EA44B5;
     address public constant EARN = 0xdB57a53C428a9faFcbFefFB6dd80d0f427543695;
 
-    constructor() SYBaseUpg(AUSDF) {}
+    constructor() SYBaseUpg(ASUSDF) {}
 
     function initialize() external initializer {
         __SYBaseUpg_init("SY Astherus asUSDF", "SY-asUSDF");
@@ -24,10 +24,10 @@ contract PendleAstherusAUSDFSY is SYBaseUpg {
         address tokenIn,
         uint256 amountDeposited
     ) internal virtual override returns (uint256 /*amountSharesOut*/) {
-        if (tokenIn != AUSDF) {
-            uint256 preBalance = _selfBalance(AUSDF);
+        if (tokenIn != ASUSDF) {
+            uint256 preBalance = _selfBalance(ASUSDF);
             IAstherusEarn(EARN).deposit(amountDeposited);
-            amountDeposited = _selfBalance(AUSDF) - preBalance;
+            amountDeposited = _selfBalance(ASUSDF) - preBalance;
         }
         return amountDeposited;
     }
@@ -37,7 +37,7 @@ contract PendleAstherusAUSDFSY is SYBaseUpg {
         address /*tokenOut*/,
         uint256 amountSharesToRedeem
     ) internal override returns (uint256) {
-        _transferOut(AUSDF, receiver, amountSharesToRedeem);
+        _transferOut(ASUSDF, receiver, amountSharesToRedeem);
         return amountSharesToRedeem;
     }
 
@@ -57,7 +57,7 @@ contract PendleAstherusAUSDFSY is SYBaseUpg {
         address tokenIn,
         uint256 amountTokenToDeposit
     ) internal view override returns (uint256 /*amountSharesOut*/) {
-        if (tokenIn == AUSDF) return amountTokenToDeposit;
+        if (tokenIn == ASUSDF) return amountTokenToDeposit;
         return PMath.divDown(amountTokenToDeposit, IAstherusEarn(EARN).exchangePrice());
     }
 
@@ -69,19 +69,19 @@ contract PendleAstherusAUSDFSY is SYBaseUpg {
     }
 
     function getTokensIn() public pure override returns (address[] memory res) {
-        return ArrayLib.create(USDF, AUSDF);
+        return ArrayLib.create(USDF, ASUSDF);
     }
 
     function getTokensOut() public pure override returns (address[] memory res) {
-        return ArrayLib.create(AUSDF);
+        return ArrayLib.create(ASUSDF);
     }
 
     function isValidTokenIn(address token) public pure override returns (bool) {
-        return token == USDF || token == AUSDF;
+        return token == USDF || token == ASUSDF;
     }
 
     function isValidTokenOut(address token) public pure override returns (bool) {
-        return token == AUSDF;
+        return token == ASUSDF;
     }
 
     function assetInfo() external view returns (AssetType assetType, address assetAddress, uint8 assetDecimals) {
