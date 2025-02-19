@@ -1,0 +1,15 @@
+{
+    "name": "eUSDe-MAINNET-JUL2025",
+    "SY": "0xbeE9E48f23159984672bE4972146A7071aafeCCa",
+    "YT": "0x90599603da7B777AE696D200844De7f5dD2798A1",
+    "PT": "0x8E8170e239c659879C647720Db6D2AdB5360918f",
+    "market": "0xA745eCE257FE98a97C2B52E63788d4908cb20c03",
+    "expiry": 1748476800,
+    "lnFeeRateRoot": "14888612493750654",
+    "scalarRoot": "17035673768129489896",
+    "initialRateAnchor": "1057057179138678096",
+    "doCacheIndexSameBlock": true,
+    "deployTxHash": "0x9dd148c835a542a94438d1ae12fbb2b74ec493d5bfb313a1272ce132d90f02b5",
+    "deployBlockNumber": 21880379,
+    "reversedFee": 1.4999999999238067
+}
