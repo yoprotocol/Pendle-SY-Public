@@ -24,4 +24,6 @@ interface IVedaTeller {
     ) external returns (uint256 shares);
 
     function assetData(address) external view returns (Asset memory);
+
+    function vault() external view returns (address);
 }
