@@ -51,7 +51,7 @@ library PendleCurve2TokenLib {
             new_balances[i] -= fees[i];
         }
         uint256 D2 = _get_D_mem(pool, new_balances, amp);
-        return (    total_supply * (D2 - D0)) / D0;
+        return (total_supply * (D2 - D0)) / D0;
     }
 
     function _get_D_mem(address pool, uint256[] memory balances, uint256 _amp) internal view returns (uint256) {

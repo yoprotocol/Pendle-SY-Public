@@ -33,7 +33,6 @@ interface ICurvePoolDynamic {
         uint256 _min_amount
     ) external returns (uint256 tokenOut);
 
-
     function remove_liquidity_one_coin(
         uint256 _burn_amount,
         int128 i,
