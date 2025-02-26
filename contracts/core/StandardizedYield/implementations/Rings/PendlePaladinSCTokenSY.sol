@@ -4,7 +4,6 @@ pragma solidity ^0.8.23;
 import "../PendleERC4626UpgSYV2.sol";
 import "../../../../interfaces/EtherFi/IVedaTeller.sol";
 import "../../../../interfaces/Paladin/IPaladinWrapper.sol";
-import "hardhat/console.sol";
 
 contract PendlePaladinSCTokenSY is PendleERC4626UpgSYV2 {
     address public immutable rawToken;
