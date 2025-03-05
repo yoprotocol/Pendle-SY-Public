@@ -2,20 +2,17 @@
 pragma solidity ^0.8.23;
 
 import "./PendleConcreteVaultSY.sol";
-import "../../../../interfaces/Solv/ISolvRouterV2.sol";
-import "../../../../interfaces/Solv/ISolvOpenFundMarket.sol";
-import "../../../../interfaces/Solv/ISolvERC3525.sol";
-import "../../../../interfaces/Solv/ISolvOracle.sol";
 import "../Solv/PendleSolvHelper.sol";
 
 contract PendleConcreteSolvBTCBBNSY is PendleConcreteVaultSY {
     using ArrayLib for address[];
 
-    constructor() PendleConcreteVaultSY(0x5a35b8817cB92dCd7196B243351f018C4982C010) {}
 
     address public constant WBTC = 0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599;
     address public constant SOLV_BTC = 0x7A56E1C57C7475CCf742a1832B028F0456652F97;
     address public constant SOLV_BBN_BTC = 0xd9D920AA40f578ab794426F5C90F6C731D159DEf;
+
+    constructor() PendleConcreteVaultSY(0x5a35b8817cB92dCd7196B243351f018C4982C010) {}
 
     address[] internal FULL_PATH;
     function initialize(string memory _name, string memory _symbol) external override initializer {
