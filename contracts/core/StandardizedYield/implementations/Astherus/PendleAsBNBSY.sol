@@ -35,15 +35,19 @@ contract PendleAsBNBSY is SYBaseUpg {
         address tokenIn,
         uint256 amountDeposited
     ) internal virtual override returns (uint256 amountSharesOut) {
+        if (tokenIn == ASBNB) {
+            return amountDeposited;
+        }
+
         // Logically equivalent of checking output > 0
         // if (IAstherusBnbYieldProxy(YIELD_PROXY).activitiesOnGoing()) {
         //     revert AstherusYieldProxyActivitiesOnGoing();
         // }
         if (tokenIn == NATIVE) {
             amountSharesOut = IAstherusBnbMinter(MINTER).mintAsBnb{value: amountDeposited}();
-        } else {
+        } else if (tokenIn == SLIS_BNB) {
             amountSharesOut = IAstherusBnbMinter(MINTER).mintAsBnb(amountDeposited);
-        }
+        } 
 
         if (amountSharesOut == 0) {
             revert AstherusYieldProxyActivitiesOnGoing();
@@ -56,7 +60,11 @@ contract PendleAsBNBSY is SYBaseUpg {
         uint256 amountSharesToRedeem
     ) internal override returns (uint256 amountTokenOut) {
         if (tokenOut != ASBNB) {
-            amountTokenOut = IAstherusBnbMinter(ASBNB).burnAsBnb(amountSharesToRedeem);
+            uint256 preBalance = _selfBalance(SLIS_BNB);
+            IAstherusBnbMinter(MINTER).burnAsBnb(amountSharesToRedeem);
+            amountTokenOut = _selfBalance(SLIS_BNB) - preBalance;
+        } else {
+            amountTokenOut = amountSharesToRedeem;
         }
         _transferOut(tokenOut, receiver, amountTokenOut);
     }
