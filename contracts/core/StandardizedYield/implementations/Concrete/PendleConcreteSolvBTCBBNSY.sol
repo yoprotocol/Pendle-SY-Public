@@ -7,7 +7,6 @@ import "../Solv/PendleSolvHelper.sol";
 contract PendleConcreteSolvBTCBBNSY is PendleConcreteVaultSY {
     using ArrayLib for address[];
 
-
     address public constant WBTC = 0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599;
     address public constant SOLV_BTC = 0x7A56E1C57C7475CCf742a1832B028F0456652F97;
     address public constant SOLV_BBN_BTC = 0xd9D920AA40f578ab794426F5C90F6C731D159DEf;
@@ -25,10 +24,7 @@ contract PendleConcreteSolvBTCBBNSY is PendleConcreteVaultSY {
 
     function _deposit(address tokenIn, uint256 amountDeposited) internal virtual override returns (uint256) {
         if (tokenIn != yieldToken && tokenIn != asset) {
-            (tokenIn, amountDeposited) = (
-                asset,
-                PendleSolvHelper._mintBTCBBN(tokenIn, amountDeposited)
-            );
+            (tokenIn, amountDeposited) = (asset, PendleSolvHelper._mintBTCBBN(tokenIn, amountDeposited));
         }
         return super._deposit(tokenIn, amountDeposited);
     }
@@ -38,7 +34,10 @@ contract PendleConcreteSolvBTCBBNSY is PendleConcreteVaultSY {
         uint256 amountTokenToDeposit
     ) internal view virtual override returns (uint256 /*amountSharesOut*/) {
         if (tokenIn != yieldToken && tokenIn != asset) {
-            (tokenIn, amountTokenToDeposit) = (asset, PendleSolvHelper._previewMintBTCBBN(tokenIn, amountTokenToDeposit));
+            (tokenIn, amountTokenToDeposit) = (
+                asset,
+                PendleSolvHelper._previewMintBTCBBN(tokenIn, amountTokenToDeposit)
+            );
         }
         return super._previewDeposit(tokenIn, amountTokenToDeposit);
     }
