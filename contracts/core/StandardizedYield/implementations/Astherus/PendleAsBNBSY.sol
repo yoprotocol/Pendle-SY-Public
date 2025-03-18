@@ -11,8 +11,7 @@ contract PendleAsBNBSY is SYBaseUpg {
 
     error AstherusYieldProxyActivitiesOnGoing();
 
-  uint256 public constant FEE_DENOMINATOR = 10000;
-
+    uint256 public constant FEE_DENOMINATOR = 10000;
 
     address public constant LISTA_STAKE_MANAGER = 0x1adB950d8bB3dA4bE104211D5AB038628e477fE6;
     address public constant MINTER = 0x2F31ab8950c50080E77999fa456372f276952fD8;
@@ -50,7 +49,7 @@ contract PendleAsBNBSY is SYBaseUpg {
             amountSharesOut = IAstherusBnbMinter(MINTER).mintAsBnb{value: amountDeposited}();
         } else if (tokenIn == SLIS_BNB) {
             amountSharesOut = IAstherusBnbMinter(MINTER).mintAsBnb(amountDeposited);
-        } 
+        }
 
         if (amountSharesOut == 0) {
             revert AstherusYieldProxyActivitiesOnGoing();

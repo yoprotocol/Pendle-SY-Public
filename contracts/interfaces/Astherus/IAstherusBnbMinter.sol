@@ -9,7 +9,7 @@ interface IAstherusBnbMinter {
     function convertToTokens(uint256 asBnbAmt) external view returns (uint256);
 
     function withdrawalFeeRate() external view returns (uint256);
-    
+
     function convertToAsBnb(uint256 tokens) external view returns (uint256);
 
     function burnAsBnb(uint256 amountToBurn) external returns (uint256);
