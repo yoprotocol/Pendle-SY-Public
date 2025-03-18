@@ -5,7 +5,7 @@ import "../../SYBaseUpg.sol";
 
 import "../../../../interfaces/Astherus/IAstherusEarn.sol";
 
-contract PendleAstherusASUSDFSY is SYBaseUpg {
+contract PendleAstherusUSDFSY is SYBaseUpg {
     address public constant BINANCE_USD = 0x55d398326f99059fF775485246999027B3197955;
     address public constant USDF_EARN = 0xC271fc70dD9E678ac1AB632f797894fe4BE2C345;
     address public constant USDF = 0x5A110fC00474038f6c02E89C707D638602EA44B5;
