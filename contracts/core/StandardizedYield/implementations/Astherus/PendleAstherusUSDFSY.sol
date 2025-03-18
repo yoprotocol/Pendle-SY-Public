@@ -26,8 +26,9 @@ contract PendleAstherusUSDFSY is SYBaseUpg {
         uint256 amountDeposited
     ) internal virtual override returns (uint256 /*amountSharesOut*/) {
         if (tokenIn == BINANCE_USD) {
+            uint256 preBalance = _selfBalance(USDF);
             IAstherusEarn(USDF_EARN).deposit(amountDeposited);
-            (tokenIn, amountDeposited) = (USDF, _selfBalance(USDF));
+            (tokenIn, amountDeposited) = (USDF, _selfBalance(USDF) - preBalance);
         }
         return amountDeposited;
     }
