@@ -17,5 +17,5 @@ interface ISkyPSM3 {
         uint256 amountIn
     ) external view returns (uint256 amountOut);
 
-    function convertToAssetValue(uint256 numShares) external view returns (uint256);
+    function convertToAssets(address asset, uint256 numShares) external view returns (uint256);
 }
