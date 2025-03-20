@@ -10,12 +10,16 @@ contract PendleInfraredBERASY is SYBaseUpg {
 
     constructor() SYBaseUpg(IBERA) {}
 
+    function initialize() external {
+        __SYBaseUpg_init("SY Infrared BERA", "SY-iBERA");
+    }
+
     function _deposit(
         address tokenIn,
         uint256 amountDeposited
     ) internal virtual override returns (uint256 /*amountSharesOut*/) {
         if (tokenIn == NATIVE) {
-            return IInfraredBERA(IBERA).mint{value: amountDeposited} (address(this));
+            return IInfraredBERA(IBERA).mint{value: amountDeposited}(address(this));
         }
         return amountDeposited;
     }
@@ -30,8 +34,7 @@ contract PendleInfraredBERASY is SYBaseUpg {
     }
 
     function exchangeRate() public view virtual override returns (uint256) {
-        (uint256 compoundAmount,) =
-            IInfraredBeraFeeReceivor(FEE_RECEIVOR).distribution();
+        (uint256 compoundAmount, ) = IInfraredBeraFeeReceivor(FEE_RECEIVOR).distribution();
         uint256 ts = IERC20(IBERA).totalSupply();
         uint256 ta = IInfraredBERA(IBERA).deposits();
         return PMath.divDown(ta + compoundAmount, ts);
@@ -74,4 +77,3 @@ contract PendleInfraredBERASY is SYBaseUpg {
         return (AssetType.TOKEN, NATIVE, 18);
     }
 }
-

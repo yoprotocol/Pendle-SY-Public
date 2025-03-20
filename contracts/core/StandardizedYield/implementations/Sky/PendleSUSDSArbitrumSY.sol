@@ -46,7 +46,7 @@ contract PendleSUSDSArbitrumSY is SYBaseUpg {
     }
 
     function exchangeRate() public view virtual override returns (uint256) {
-        (, int256 answer,,,) = AggregatorV3Interface(RATE_PROVIDER).latestRoundData();
+        (, int256 answer, , , ) = AggregatorV3Interface(RATE_PROVIDER).latestRoundData();
         return PMath.Uint(answer) / 1e9;
     }
 
