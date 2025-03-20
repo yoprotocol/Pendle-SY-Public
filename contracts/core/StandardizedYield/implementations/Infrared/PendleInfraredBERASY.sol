@@ -10,7 +10,7 @@ contract PendleInfraredBERASY is SYBaseUpg {
 
     constructor() SYBaseUpg(IBERA) {}
 
-    function initialize() external {
+    function initialize() external initializer {
         __SYBaseUpg_init("SY Infrared BERA", "SY-iBERA");
     }
 
