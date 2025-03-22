@@ -90,22 +90,23 @@ contract PendleAsBNBSY is SYBaseUpg {
         address tokenIn,
         uint256 amountTokenToDeposit
     ) internal view override returns (uint256 /*amountSharesOut*/) {
-        if (IAstherusBnbYieldProxy(YIELD_PROXY).activitiesOnGoing()) {
-            revert AstherusYieldProxyActivitiesOnGoing();
-        }
 
-        if (tokenIn == NATIVE) {
-            (tokenIn, amountTokenToDeposit) = (
-                SLIS_BNB,
-                IListaStakeManager(LISTA_STAKE_MANAGER).convertBnbToSnBnb(amountTokenToDeposit)
-            );
-        }
-
-        if (tokenIn == SLIS_BNB) {
-            return IAstherusBnbMinter(MINTER).convertToAsBnb(amountTokenToDeposit);
-        } else {
+        if (tokenIn == ASBNB) {
             return amountTokenToDeposit;
+        } else {
+            if (IAstherusBnbYieldProxy(YIELD_PROXY).activitiesOnGoing()) {
+                revert AstherusYieldProxyActivitiesOnGoing();
+            }
+
+            if (tokenIn == NATIVE) {
+                (tokenIn, amountTokenToDeposit) = (
+                    SLIS_BNB,
+                    IListaStakeManager(LISTA_STAKE_MANAGER).convertBnbToSnBnb(amountTokenToDeposit)
+                );
+            }
+            return IAstherusBnbMinter(MINTER).convertToAsBnb(amountTokenToDeposit);
         }
+
     }
 
     function _previewRedeem(
