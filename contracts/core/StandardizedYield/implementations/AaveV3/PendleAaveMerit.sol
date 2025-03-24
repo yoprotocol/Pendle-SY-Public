@@ -13,14 +13,14 @@ abstract contract PendleAaveMerit is TokenHelper {
         offchainReceiver = _offchainReceiver;
     }
 
-    function claimOffchainGHORewards(
+    function claimOffchainRewards(
         address[] calldata users,
         address[] calldata tokens,
         uint256[] calldata amounts,
         bytes32[][] calldata proofs
     ) external {
 
-        require (msg.sender == offchainReceiver, "PendleAaveMerit: unauthorized");
+        require(msg.sender == offchainReceiver, "PendleAaveMerit: unauthorized");
         require(users.length == 1 && users[0] == address(this), "PendleAaveMerit: invalid users");
 
         uint256[] memory preBalance = new uint256[](tokens.length);
