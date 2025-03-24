@@ -5,17 +5,20 @@ import "../PendleERC20SYUpg.sol";
 import "../../../../interfaces/IPExchangeRateOracle.sol";
 import "../../../../interfaces/IPTokenWithSupplyCap.sol";
 
-contract PendleSUSDEMantleSY is PendleERC20SYUpg, IPTokenWithSupplyCap {
+contract PendleSUSDEL2SY is PendleERC20SYUpg, IPTokenWithSupplyCap {
     event SetNewExchangeRateOracle(address oracle);
 
     event SupplyCapUpdated(uint256 newSupplyCap);
 
     error SupplyCapExceeded(uint256 totalSupply, uint256 supplyCap);
 
+    address public immutable usde;
     address public exchangeRateOracle;
     uint256 public supplyCap;
 
-    constructor(address _susde) PendleERC20SYUpg(_susde) {}
+    constructor(address _susde, address _usde) PendleERC20SYUpg(_susde) {
+        usde = _usde;
+    }
 
     function initialize(uint256 _initialSupplyCap, address _initialExchangeRateOracle) external initializer {
         __SYBaseUpg_init("SY Ethena sUSDE", "SY-sUSDE");
@@ -89,5 +92,15 @@ contract PendleSUSDEMantleSY is PendleERC20SYUpg, IPTokenWithSupplyCap {
 
     function getAbsoluteTotalSupply() external view returns (uint256) {
         return totalSupply();
+    }
+
+    function assetInfo()
+        external
+        view
+        virtual
+        override
+        returns (AssetType assetType, address assetAddress, uint8 assetDecimals)
+    {
+        return (AssetType.TOKEN, usde, IERC20Metadata(usde).decimals());
     }
 }
