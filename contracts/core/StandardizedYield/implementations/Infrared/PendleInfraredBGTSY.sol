@@ -12,7 +12,7 @@ contract PendleInfraredBGTSY is SYBaseWithRewardsUpg {
     constructor() SYBaseUpg(IBGT) {}
 
     function initialize() external initializer {
-        __SYBaseUpg_init("SY Staked Infrared BGT", "SY-iBERA");
+        __SYBaseUpg_init("SY Staked Infrared BGT", "SY-iBGT");
         _safeApproveInf(IBGT, VAULT);
     }
 
