@@ -3,13 +3,13 @@
     "SY": "0xC61C866B6fDC36f88eC368b969C6d7cb810caFa9",
     "YT": "0xb63aD66394E380c3C1023d3347F3036128056AFe",
     "PT": "0xdda59E4D1AC10C73B87AAb69686a806732e5F137",
-    "market": "0x47A11b7E643c9dcb2753D2cBeA42DA2274890F64",
+    "market": "0x227d4a2E5734b500fA0bEd940E4df54bDda25636",
     "expiry": 1750896000,
-    "lnFeeRateRoot": "48790164169432003",
-    "scalarRoot": "4068693556343584220",
-    "initialRateAnchor": "1184019616728151140",
+    "lnFeeRateRoot": "48694921538758549",
+    "scalarRoot": "2985134006356987087",
+    "initialRateAnchor": "1232039337283471399",
     "doCacheIndexSameBlock": false,
-    "deployTxHash": "0x1910e18da3bf3487b7383e84079924c6f8118ba41a560ea908a5267ff7c2cfe1",
-    "deployBlockNumber": 2815059,
-    "reversedFee": 4.999999999954641
+    "deployTxHash": "0x3bff641e5b12a2b2c9b9d543ae7c950c2a9a08ce36b8bab4bd4d379bcb9672c8",
+    "deployBlockNumber": 2843485,
+    "reversedFee": 4.989999999920358
 }
