@@ -8,6 +8,7 @@ contract PendleInfraredBGTSY is SYBaseWithRewardsUpg {
     address public constant VAULT = 0x75F3Be06b02E235f6d0E7EF2D462b29739168301;
     address public constant IBGT = 0xac03CABA51e17c86c921E1f6CBFBdC91F8BB2E6b;
     address public constant HONEY = 0xFCBD14DC51f0A4d49d5E53C2E0950e0bC26d0Dce;
+    address public constant BERA = 0x6969696969696969696969696969696969696969;
 
     constructor() SYBaseUpg(IBGT) {}
 
@@ -77,7 +78,7 @@ contract PendleInfraredBGTSY is SYBaseWithRewardsUpg {
     //////////////////////////////////////////////////////////////*/
 
     function _getRewardTokens() internal pure override returns (address[] memory res) {
-        return ArrayLib.create(HONEY);
+        return ArrayLib.create(HONEY, BERA);
     }
 
     function _redeemExternalReward() internal override {
