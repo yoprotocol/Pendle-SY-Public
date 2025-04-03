@@ -7,6 +7,7 @@ import "../../../../interfaces/Silo/ISiloIncentiveController.sol";
 
 contract PendleSiloV2SY is SYBaseWithRewardsUpg {
     address public constant SILO = 0x53f753E4B17F4075D6fa2c6909033d224b81e698;
+    address public constant WS = 0x039e2fB66102314Ce7b64Ce5Ce3E5183bc94aD38;
 
     address public immutable asset;
     address public immutable incentiveController;
@@ -102,7 +103,7 @@ contract PendleSiloV2SY is SYBaseWithRewardsUpg {
      * @dev See {IStandardizedYield-getRewardTokens}
      */
     function _getRewardTokens() internal pure override returns (address[] memory) {
-        return ArrayLib.create(SILO);
+        return ArrayLib.create(SILO, WS);
     }
 
     function _redeemExternalReward() internal override {
