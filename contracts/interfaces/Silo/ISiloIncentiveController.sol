@@ -2,6 +2,11 @@
 pragma solidity ^0.8.0;
 
 interface ISiloIncentiveController {
+    struct AccruedRewards {
+        uint256 amount;
+        bytes32 programId;
+        address rewardToken;
+    }
     /**
      * @dev Claims reward for msg.sender, on all the assets of the lending pool, accumulating the pending rewards
      * @param amount Amount of rewards to claim
@@ -13,4 +18,6 @@ interface ISiloIncentiveController {
      * @dev for backward compatibility with previous implementation of the Incentives controller
      */
     function REWARD_TOKEN() external view returns (address); // solhint-disable-line func-name-mixedcase
+
+    function claimRewards(address _to) external returns (AccruedRewards[] memory accruedRewards);
 }
