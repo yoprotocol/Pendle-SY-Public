@@ -29,4 +29,6 @@ contract PendleZerolendLBTCSYUpg is PendleAaveV3WithRewardsSYUpg {
     {
         return (AssetType.TOKEN, WBTC, IERC20Metadata(WBTC).decimals());
     }
+
+    function _redeemExternalReward() internal override {}
 }

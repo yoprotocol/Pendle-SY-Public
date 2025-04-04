@@ -101,4 +101,6 @@ contract PendleZerolendEBTCSYUpg is PendleAaveV3WithRewardsSYUpg {
 
         return (IZerolendZ0Token(Z0EBTC).scaledTotalSupply() + reserve.accruedToTreasury).mulDown(incomeIndex);
     }
+
+    function _redeemExternalReward() internal override {}
 }
