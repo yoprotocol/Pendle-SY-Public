@@ -126,7 +126,7 @@ contract PendleAaveV3WithRewardsSYUpg is SYBaseWithRewardsUpg {
         return ArrayLib.create(defaultRewardToken);
     }
 
-    function _redeemExternalReward() internal override {
+    function _redeemExternalReward() internal virtual override {
         if (incentiveController != address(0)) {
             IAaveV3IncentiveController(incentiveController).claimAllRewardsToSelf(ArrayLib.create(aToken));
         }
