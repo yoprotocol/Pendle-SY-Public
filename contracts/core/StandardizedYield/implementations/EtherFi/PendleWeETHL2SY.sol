@@ -6,7 +6,7 @@ import "../../../../interfaces/EtherFi/IEtherFiL2Pool.sol";
 import "../../../../interfaces/EtherFi/IEtherFiExchangeRateProvider.sol";
 import "../../../../interfaces/IPExchangeRateOracle.sol";
 
-contract PendleEETHL2SY is PendleERC20SYUpg {
+contract PendleWeETHL2SY is PendleERC20SYUpg {
     using PMath for uint256;
 
     address public constant EETH_L1 = 0x35fA164735182de50811E8e2E824cFb9B6118ac2;
