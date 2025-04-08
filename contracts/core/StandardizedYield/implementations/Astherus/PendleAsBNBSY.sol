@@ -90,7 +90,6 @@ contract PendleAsBNBSY is SYBaseUpg {
         address tokenIn,
         uint256 amountTokenToDeposit
     ) internal view override returns (uint256 /*amountSharesOut*/) {
-
         if (tokenIn == ASBNB) {
             return amountTokenToDeposit;
         } else {
@@ -106,7 +105,6 @@ contract PendleAsBNBSY is SYBaseUpg {
             }
             return IAstherusBnbMinter(MINTER).convertToAsBnb(amountTokenToDeposit);
         }
-
     }
 
     function _previewRedeem(
