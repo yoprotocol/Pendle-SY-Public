@@ -71,4 +71,13 @@ contract PendleStakedLevelUSDSY is PendleERC4626UpgSYV2 {
     function getTokensIn() public pure override returns (address[] memory res) {
         return ArrayLib.create(LVLUSD, SLVLUSD, USDT);
     }
+
+    function isValidTokenOut(address token) public view virtual override returns (bool) {
+        return token == yieldToken;
+    }
+
+    function getTokensOut() public view virtual override returns (address[] memory res) {
+        res = new address[](1);
+        res[0] = yieldToken;
+    }
 }
