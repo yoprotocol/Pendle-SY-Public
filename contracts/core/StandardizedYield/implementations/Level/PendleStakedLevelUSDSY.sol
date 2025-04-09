@@ -54,11 +54,11 @@ contract PendleStakedLevelUSDSY is PendleERC4626UpgSYV2 {
             uint256 price;
             {
                 (, int256 _price, , , ) = IChainlinkAggregator(oracle).latestRoundData();
-                price = _price.Uint().min(oracleDecimals);
+                price = _price.Uint().min(10 ** oracleDecimals);
             }
 
             tokenIn = LVLUSD;
-            amountTokenToDeposit = (amountTokenToDeposit * price).mulDown(10 ** (tokenInDecimals + oracleDecimals));
+            amountTokenToDeposit = (amountTokenToDeposit * price).divDown(10 ** (tokenInDecimals + oracleDecimals));
         }
 
         return super._previewDeposit(tokenIn, amountTokenToDeposit);

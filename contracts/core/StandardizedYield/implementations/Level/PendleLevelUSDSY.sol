@@ -56,9 +56,10 @@ contract PendleLevelUSDSY is PendleERC20SYUpg {
         uint256 price;
         {
             (, int256 _price, , , ) = IChainlinkAggregator(oracle).latestRoundData();
-            price = _price.Uint().min(oracleDecimals);
+            price = _price.Uint().min(10 ** oracleDecimals);
         }
-        return (amountTokenToDeposit * price).mulDown(10 ** (tokenInDecimals + oracleDecimals));
+
+        return (amountTokenToDeposit * price).divDown(10 ** (tokenInDecimals + oracleDecimals));
     }
 
     function isValidTokenIn(address token) public pure override returns (bool) {
