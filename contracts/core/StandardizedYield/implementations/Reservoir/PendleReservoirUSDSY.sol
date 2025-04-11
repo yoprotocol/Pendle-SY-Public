@@ -20,7 +20,7 @@ contract PendleReservoirUSDSY is SYBaseUpg {
         __SYBaseUpg_init("SY Reservoir Protocol RUSD", "SY-RUSD");
 
         _safeApproveInf(RUSD, PSM);
-        _safeApproveInf(USDC, CREDIT_ENFORSER);
+        _safeApproveInf(USDC, PSM);
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ contract PendleReservoirUSDSY is SYBaseUpg {
         uint256 amountDeposited
     ) internal virtual override returns (uint256 /*amountSharesOut*/) {
         if (tokenIn == USDC) {
-            return IReservoirCreditEnforcer(CREDIT_ENFORSER).mintStablecoin(amountDeposited);
+            return IReservoirCreditEnforcer(CREDIT_ENFORSER).mintStablecoin(amountDeposited) * DECIMAL_FACTOR;
         }
         return amountDeposited;
     }
@@ -47,7 +47,10 @@ contract PendleReservoirUSDSY is SYBaseUpg {
             IReservoirPSM(PSM).redeem(receiver, amtOut);
             return amtOut;
         }
-        return amountSharesToRedeem;
+        else {
+            _transferOut(tokenOut, receiver,amountSharesToRedeem);
+            return amountSharesToRedeem;
+        }
     }
 
     /*///////////////////////////////////////////////////////////////
