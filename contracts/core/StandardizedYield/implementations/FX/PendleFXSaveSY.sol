@@ -3,6 +3,7 @@ pragma solidity ^0.8.17;
 
 import "../PendleERC4626UpgSYV2.sol";
 import "../../../../interfaces/FX/IFXBase.sol";
+import "hardhat/console.sol";
 
 contract PendleFXSaveSY is PendleERC4626UpgSYV2 {
     address public constant FXSAVE = 0x7743e50F534a7f9F1791DdE7dCD89F7783Eefc39;
@@ -23,7 +24,7 @@ contract PendleFXSaveSY is PendleERC4626UpgSYV2 {
         uint256 amountDeposited
     ) internal virtual override returns (uint256 /*amountSharesOut*/) {
         if (tokenIn == USDC || tokenIn == FXUSD) {
-            (tokenIn, amountDeposited) = (asset, IFXBase(asset).deposit(address(this), USDC, amountDeposited, 0));
+            (tokenIn, amountDeposited) = (asset, IFXBase(asset).deposit(address(this), tokenIn, amountDeposited, 0));
         }
         return super._deposit(tokenIn, amountDeposited);
     }
