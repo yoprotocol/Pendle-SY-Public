@@ -1,6 +1,7 @@
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.28;
+// SPDX-License-Identifier: GPL-3.0-or-later
+pragma solidity ^0.8.17;
 
+import {IERC4626} from "../../../../interfaces/IERC4626.sol";
 import {PendleERC4626UpgSYV2} from "../PendleERC4626UpgSYV2.sol";
 
 // __   __    ____            _                  _
@@ -14,9 +15,9 @@ import {PendleERC4626UpgSYV2} from "../PendleERC4626UpgSYV2.sol";
 /// @dev The underlying asset must be redeemed in Yo.
 /// @author https://yo.xyz/
 contract PendleYoVaultSY is PendleERC4626UpgSYV2 {
-    address public immutable ONE_SHARE;
+    uint256 public immutable ONE_SHARE;
 
-    constructor(address _yoVault, address _oneShare) SYBaseUpg(_yoVault) {
+    constructor(address _yoVault, uint256 _oneShare) PendleERC4626UpgSYV2(_yoVault) {
         asset = IERC4626(_yoVault).asset();
         ONE_SHARE = _oneShare;
     }
@@ -33,7 +34,7 @@ contract PendleYoVaultSY is PendleERC4626UpgSYV2 {
     }
 
     function _previewRedeem(
-        address tokenOut,
+        address /*tokenOut*/,
         uint256 amountSharesToRedeem
     ) internal view virtual override returns (uint256 /*amountTokenOut*/) {
         return amountSharesToRedeem;
